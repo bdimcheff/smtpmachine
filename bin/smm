@@ -3,6 +3,4 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'smtpmachine'
 
-EventMachine.run {
-  EventMachine.start_server "127.0.0.1", 2525, SMTPMachine::Server
-}
+SMTPMachine::Server.start!
