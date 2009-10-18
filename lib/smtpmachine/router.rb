@@ -18,14 +18,33 @@ module SMTPMachine
       end
     end
 
+    attr_accessor :routes
+      
     def route!(email)
-      routes = self.class.routes
-
-      routes.each do |regex, block|
-        if regex =~ email
-          instance_eval(&block)
+      compile_routes(email) unless routes
+      
+      catch(:halt) do
+        routes.each do |block|
+          catch(:pass) do
+            instance_eval(&block)
+          end
         end
       end
+    end
+
+    private
+    def compile_routes(email)
+      self.routes = self.class.routes.select {|r, _| r =~ email}.map {|_,b| b}
+    end
+
+    # Pass control to the next matching route.
+    def pass
+      throw :pass
+    end
+    
+    # Exit the current block, halts any further processing of the request
+    def halt
+      throw :halt
     end
   end
 end

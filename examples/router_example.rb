@@ -35,8 +35,50 @@ describe 'SMTPMachine::Router' do
       end
     end
     
-    @router.new.route!('')
+    route
 
     called.should be_true
   end
+
+  it 'calls all blocks that match' do
+    called = ''
+
+    @router.class_eval do
+      map(/.*/) { called += "*" }
+      map(/foo/) { called += "foo" }
+      map(/bar/) { called += "bar" }
+    end
+    
+    route
+
+    called.should == '*foo'
+  end
+
+  it "passes to the next match when pass is called" do
+    called = ''
+    
+    @router.class_eval do
+      map(/.*/) { pass; called += "fail" }
+      map(/.*/) { called += "win" }
+    end
+
+    route
+
+    called.should == 'win'
+  end
+
+  it "halts all processing when halt is called" do
+    called = ''
+    
+    @router.class_eval do
+      map(/.*/) { halt; called += "fail" }
+      map(/.*/) { called += "fail" }
+    end
+
+    route
+
+    called.should == ''
+  end
+
+  
 end
