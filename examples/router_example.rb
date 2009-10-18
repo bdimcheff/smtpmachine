@@ -21,15 +21,16 @@ describe 'SMTPMachine::Router' do
   end
 
   it 'allows methods to be called on the including object' do
+    called = false
+
     @router.class_eval do
+      map(/.*/) { called = true }
+
       def foo
         true
       end
     end
     
-    called = false
-
-    @router.map(/.*/) { called = true }
     @router.new.route!('')
 
     called.should be_true
