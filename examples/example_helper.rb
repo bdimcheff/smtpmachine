@@ -18,6 +18,8 @@ Micronaut.configure do |c|
 end
 
 class SMTPMachine::Server
+  self.parms = {}
+  
   def connection_ended
     EM.stop_event_loop
   end

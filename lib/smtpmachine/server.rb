@@ -3,7 +3,7 @@ require 'em/protocols/smtpserver'
 module SMTPMachine 
   class Server < EventMachine::Protocols::SmtpServer
     attr_reader :recipients, :sender
-    self.parms = { :verbose => true }
+    self.parms = { :verbose => false }
     
     def receive_sender(sender)
       @sender = sender
