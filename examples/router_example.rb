@@ -1,5 +1,9 @@
 require 'example_helper'
 
+def route(email = 'foo@example.com')
+  @router.new.route!(email)
+end
+
 describe 'SMTPMachine::Router' do
   before(:each) do
     @router = Class.new do
@@ -15,7 +19,7 @@ describe 'SMTPMachine::Router' do
     mapped = false
     
     @router.map(/.*/) { mapped = true }
-    @router.new.route!('foo@example.com')
+    route
     
     mapped.should be_true
   end
