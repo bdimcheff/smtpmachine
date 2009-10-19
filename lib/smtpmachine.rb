@@ -1,3 +1,5 @@
 require 'eventmachine'
 require 'smtpmachine/server'
 require 'smtpmachine/router'
+require 'smtpmachine/context'
+require 'smtpmachine/base'

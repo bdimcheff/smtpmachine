@@ -35,3 +35,7 @@ def in_server
   }
   c
 end
+
+def email_fixture(email)
+  File.read(File.expand_path(File.join(File.dirname(__FILE__), 'emails', email)))
+end

@@ -1,0 +1,181 @@
+Delivered-To: brandon.dimcheff@gmailnospam.com
+Received: by 10.231.10.31 with SMTP id n31cs18166ibn;
+        Sun, 18 Oct 2009 13:01:07 -0700 (PDT)
+Received: by 10.114.45.2 with SMTP id s2mr4369926was.122.1255896065626;
+        Sun, 18 Oct 2009 13:01:05 -0700 (PDT)
+Return-Path: <ruby-talk-admin@ruby-lang.org>
+Received: from carbon.ruby-lang.org (carbon.ruby-lang.org [221.186.184.68])
+        by mx.google.com with ESMTP id 39si10571274pzk.116.2009.10.18.13.01.03;
+        Sun, 18 Oct 2009 13:01:05 -0700 (PDT)
+Received-SPF: pass (google.com: domain of ruby-talk-admin@ruby-lang.org designates 221.186.184.68 as permitted sender) client-ip=221.186.184.68;
+Authentication-Results: mx.google.com; spf=pass (google.com: domain of ruby-talk-admin@ruby-lang.org designates 221.186.184.68 as permitted sender) smtp.mail=ruby-talk-admin@ruby-lang.org
+Received: from carbon.ruby-lang.org (beryllium.ruby-lang.org [127.0.0.1])
+	by carbon.ruby-lang.org (Postfix) with ESMTP id 83D513C21EBAF;
+	Mon, 19 Oct 2009 05:00:14 +0900 (JST)
+Received: from bristol.highgroove.com (bristol.highgroove.com [65.111.164.187])
+	by carbon.ruby-lang.org (Postfix) with ESMTP id 61CE13C21E213
+	for <ruby-talk@ruby-lang.org>; Mon, 19 Oct 2009 05:00:08 +0900 (JST)
+Received: (qmail 22912 invoked from network); 18 Oct 2009 15:00:04 -0500
+Received: from localhost (HELO localhost.localdomain) (127.0.0.1)
+  by localhost with SMTP; 18 Oct 2009 15:00:04 -0500
+Received: from newsfeed.in-ulm.de (newsfeed.in-ulm.de)
+     by comp.lang.ruby with NTTP id 252488
+     for <ruby-talk@ruby-lang.org>; Sun Oct 18 15:00:04 EST 2009
+Received: from [unknown]
+     by newsfeed.in-ulm.de (unknown) with NNTP id 252488
+     for <comp.lang.ruby>; Sun Oct 18 15:00:04 EST 2009
+Received: from Usenet via a Usenet to mail gateway located at
+     comp.lang.ruby.  This service provided as a courtesy
+     to the ruby-talk mailing list.  If this message is SPAM, its
+     ultimate origin is Usenet, not this gateway program.  All
+     subscribers to the ruby-talk mailing list agree to receive the
+     Usenet postings made to comp.lang.ruby via this gateway.  Please
+     email ruby-talk@ruby-lang.org for gateway support.
+Delivered-To: ruby-talk@ruby-lang.org
+Date: Mon, 19 Oct 2009 05:00:09 +0900
+Posted: Sun, 18 Oct 2009 21:54:37 +0200 (CEST)
+From: Christian Neukirchen <chneukirchen@gmailnospam.com>
+Reply-To: ruby-talk@ruby-lang.org
+Subject: [ANN] Rack 1.0.1, a modular Ruby webserver interface
+To: ruby-talk@ruby-lang.org (ruby-talk ML)
+Message-Id: <hbfrptU2anL1@news.in-ulm.de>
+X-ML-Name: ruby-talk
+X-Mail-Count: 348498
+X-MLServer: fml [fml 4.0.3 release (20011202/4.0.3)]; post only (only members can post)
+X-ML-Info: If you have a question, send e-mail with the body
+	"help" (without quotes) to the address ruby-talk-ctl@ruby-lang.org;
+	help=<mailto:ruby-talk-ctl@ruby-lang.org?body=help>
+User-Agent: slrn/pre1.0.0-11 (Linux)
+X-Spam-Checker-Version: SpamAssassin 3.1.7-deb3 (2006-10-05) on 
+	carbon.ruby-lang.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.5 required=7.0 tests=ARIN,BAYES_00,
+	CONTENT_TYPE_PRESENT,MSGID_FROM_MTA_HEADER,UNPARSEABLE_RELAY 
+	autolearn=disabled version=3.1.7-deb3
+Path: talisker.lacave.net!lacave.net!feeder.erje.net!news-2.dfn.de!news.dfn.de!news.uni-stuttgart.de!newsfeed.in-ulm.de!not-for-mail
+Newsgroups: comp.lang.ruby
+Organization: anarchaia.org
+X-Trace: news.in-ulm.de 250F73F1215699A9B311CA775BF6F516
+X-From-Usenet: see Received: header above.
+X-rubymirror: yes
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Precedence: bulk
+Lines: 109
+List-Id: ruby-talk.ruby-lang.org
+List-Software: fml [fml 4.0.3 release (20011202/4.0.3)]
+List-Post: <mailto:ruby-talk@ruby-lang.org>
+List-Owner: <mailto:ruby-talk-admin@ruby-lang.org>
+List-Help: <mailto:ruby-talk-ctl@ruby-lang.org?body=help>
+List-Unsubscribe: <mailto:ruby-talk-ctl@ruby-lang.org?body=unsubscribe>
+
+Hello,
+
+Today we are proud to release Rack 1.0.1, a maintenance release.
+
+= Rack, a modular Ruby webserver interface
+
+Rack provides a minimal, modular and adaptable interface for developing
+web applications in Ruby.  By wrapping HTTP requests and responses in
+the simplest way possible, it unifies and distills the API for web
+servers, web frameworks, and software in between (the so-called
+middleware) into a single method call.
+
+The exact details of this are described in the Rack specification,
+which all Rack applications should conform to.
+
+== Changes
+
+* October 18th, 2009: Eighth public release 1.0.1.
+  * Bump remainder of rack.versions.
+  * Support the pure Ruby FCGI implementation.
+  * Fix for form names containing "=": split first then unescape components
+  * Fixes the handling of the filename parameter with semicolons in names.
+  * Add anchor to nested params parsing regexp to prevent stack overflows
+  * Use more compatible gzip write api instead of "<<".
+  * Make sure that Reloader doesn't break when executed via ruby -e
+  * Make sure WEBrick respects the :Host option
+  * Many Ruby 1.9 fixes.
+
+== Where can I get it?
+
+You can download Rack 1.0.1 at
+
+        http://chneukirchen.org/releases/rack-1.0.1.tar.gz
+                  http://rubyforge.org/projects/rack
+
+Alternatively, you can checkout from the development repository with:
+
+    git clone git://github.com/rack/rack.git
+    cd rack && git checkout rack-1.0   # for this release
+
+== Installing with RubyGems
+
+A Gem of Rack is available.  You can install it with:
+
+    gem install rack
+
+I also provide a local mirror of the gems (and development snapshots)
+at my site:
+
+    gem install rack --source http://chneukirchen.org/releases/gems/
+
+== Contact
+
+Please mail bugs, suggestions and patches to
+<mailto:rack-devel@googlegroups.com>.
+
+Mailing list archives are available at
+<http://groups.google.com/group/rack-devel>.
+
+There is a bug tracker at <http://rack.lighthouseapp.com/>.
+
+Git repository (send Git patches to the mailing list):
+* http://github.com/rack/rack
+* http://git.vuxu.org/cgi-bin/gitweb.cgi?p=rack.git
+
+You are also welcome to join the #rack channel on irc.freenode.net.
+
+== Thanks
+
+The Rack Core Team, consisting of
+
+* Christian Neukirchen (chneukirchen)
+* James Tucker (raggi)
+* Josh Peek (josh)
+* Michael Fellinger (manveru)
+* Ryan Tomayko (rtomayko)
+* Scytrin dai Kinthra (scytrin)
+
+would like to thank:
+
+* Daniel RodrÃ­guez TroitiÃ±o
+* Darrin Mann
+* Hongli Lai
+* Julien Sanchez
+* Masayoshi Takahashi
+* Simon Chiang
+* Tom Robinson
+
+for their work towards this release.
+
+== Copyright
+
+Copyright (C) 2007, 2008, 2009 Christian Neukirchen <http://purl.org/net/chneukirchen>
+
+Rack is freely distributable under the terms of an MIT-style license.
+
+== Links
+
+Rack:: <http://rack.rubyforge.org/>
+Rack's Rubyforge project:: <http://rubyforge.org/projects/rack>
+Official Rack repositories:: <http://github.com/rack>
+rack-devel mailing list:: <http://groups.google.com/group/rack-devel>
+
+Happy hacking and have a nice day,
+Christian Neukirchen
+on behalf of the Rack Core Team.
+
+d489661be03d0c5d08daa4158b09e937778783ed	rack-1.0.1.tar.gz
+49ae682c029daa5007e7fe7f47096c8788743c8e	rack-1.0.1.gem
