@@ -4,7 +4,7 @@ require 'ostruct'
 def route(email = 'foo@example.com')
   router = @router.new
   router.context.rcpt_to = email
-  router.context.action = :data
+  router.action = :data
   router.route!
 end
 
@@ -12,7 +12,7 @@ describe 'SMTPMachine::Router' do
   before(:each) do
     @router = Class.new do
       include SMTPMachine::Router
-      attr_accessor :context
+      attr_accessor :context, :action
 
       reset!
       

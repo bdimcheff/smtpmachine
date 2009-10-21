@@ -22,6 +22,10 @@ module SMTPMachine
       def rcpt_to(regex, options = {}, &block)
         add_route(:rcpt_to, regex, options, &block)
       end
+      
+      def data(regex, options = {}, &block)
+        add_route(:data, regex, options, &block)
+      end
 
       def map(regex, options = {}, &block)
         add_route(:data, regex, ({:match => :rcpt_to}).merge(options), &block)
@@ -61,7 +65,7 @@ module SMTPMachine
     private
     def compile_routes
       self.routes =
-        (self.class.routes[context.action] || []).select { |r, m, _|
+        (self.class.routes[action] || []).select { |r, m, _|
         r ? r =~ context.send(m) : true  #TODO security wrt. send
       }.map {|_,_,b| b}
     end
