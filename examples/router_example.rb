@@ -1,13 +1,24 @@
 require 'example_helper'
+require 'ostruct'
 
 def route(email = 'foo@example.com')
-  @router.new.route!(email)
+  router = @router.new
+  router.context.rcpt_to = email
+  router.context.action = :data
+  router.route!
 end
 
 describe 'SMTPMachine::Router' do
   before(:each) do
     @router = Class.new do
       include SMTPMachine::Router
+      attr_accessor :context
+
+      reset!
+      
+      def initialize
+        self.context = OpenStruct.new
+      end
     end
   end
   

@@ -2,25 +2,23 @@ module SMTPMachine
   
   class Base
     class << self
-      # The prototype instance used to process requests.
-      def prototype
-        @prototype ||= new
-      end
-
-      def call(env)
-        synchronize { prototype.call(env) }
+      def inherited(subclass)
+        subclass.reset!
+        super
       end
     end
     
     include Router
+
+    attr_accessor :context
+    
+    reset!
     
     def call(env)
-      dup.call!(env)
-    end
-
-    def call!(env)
       @env = env
       @context = Context.new(env)
+
+      route!
     end
   end
 end
