@@ -15,6 +15,14 @@ module SMTPMachine
         add_route(:ehlo, regex, options, &block)
       end
 
+      def mail_from(regex, options = {}, &block)
+        add_route(:mail_from, regex, options, &block)
+      end
+      
+      def rcpt_to(regex, options = {}, &block)
+        add_route(:rcpt_to, regex, options, &block)
+      end
+
       def map(regex, options = {}, &block)
         add_route(:data, regex, ({:match => :rcpt_to}).merge(options), &block)
       end
