@@ -176,4 +176,50 @@ describe "SMTPMachine::Base" do
       result.should == "ehlomail_fromrcpt_todatamap"
     end
   end
+  
+  describe "accepted addresses" do
+    
+    before(:each) do
+      @data = {
+        :action => :data, 
+        :ehlo => 'mail.example.org', 
+        :mail_from => 'bar@example.org', 
+        :rcpt_to => 'foo@example.org', 
+        :data => 'Mail data here...'
+      }
+    end
+    
+    it "accepts the email at RCPT TO if there are matching addresses" do
+      base = create_base do
+        rcpt_to(/foo@example.org/) { true }
+      end
+      
+      base.new.call(@data.merge(:action => :rcpt_to)).should be_true
+    end
+    
+    it "rejects the email at RCPT TO if there are no matching addresses" do
+      base = create_base do
+        rcpt_to(/bademail/) { true }
+      end
+      
+      base.new.call(@data.merge(:action => :rcpt_to)).should be_false
+    end
+    
+    it "rejects the email at RCPT TO if there is a matching address that has a false block" do
+      base = create_base do
+        rcpt_to(/foo@example.org/) { false }
+      end
+      
+      base.new.call(@data.merge(:action => :rcpt_to)).should be_false
+    end
+    
+    it "rejects the email at RCPT TO even if it was accepted in MAIL FROM" do
+      base = create_base do
+        mail_from(/bar@example.org/) { true }
+        rcpt_to(/foo@example.org/) { reject }
+      end
+      
+      base.new.call(@data.merge(:action => :rcpt_to)).should be_false
+    end
+  end
 end

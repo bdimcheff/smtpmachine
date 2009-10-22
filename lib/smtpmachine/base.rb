@@ -30,10 +30,17 @@ module SMTPMachine
       @env = env
       @context = Context.new(env)
 
-      remaining_actions.each do |a|
-        self.action = a
-        route!
-        state << action
+      match = false
+      
+      catch(:halt) do
+        remaining_actions.each do |a|
+          self.action = a
+          res = !!route!
+          match ||= res
+          state << action
+        end
+        
+        match
       end
     end
   end

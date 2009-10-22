@@ -78,18 +78,18 @@ describe 'SMTPMachine::Router' do
     called.should == 'win'
   end
 
-  it "halts all processing when halt is called" do
-    called = ''
-    
-    @router.class_eval do
-      map(/.*/) { halt; called += "fail" }
-      map(/.*/) { called += "fail" }
-    end
-
-    route
-
-    called.should == ''
-  end
+  # it "halts all processing when halt is called" do
+  #   called = ''
+  #   
+  #   @router.class_eval do
+  #     map(/.*/) { halt; called += "fail" }
+  #     map(/.*/) { called += "fail" }
+  #   end
+  # 
+  #   route
+  # 
+  #   called.should == ''
+  # end
 
   
 end

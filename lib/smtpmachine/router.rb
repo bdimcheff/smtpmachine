@@ -52,14 +52,16 @@ module SMTPMachine
       
     def route!
       compile_routes
-
-      catch(:halt) do
-        routes.each do |block|
-          catch(:pass) do
-            instance_eval(&block)
-          end
+      
+      match = false
+      
+      routes.each do |block|
+        catch(:pass) do
+          res = instance_eval(&block)
+          match ||= res
         end
       end
+      match
     end
 
     private
@@ -78,6 +80,11 @@ module SMTPMachine
     # Exit the current block, halts any further processing of the request
     def halt
       throw :halt
+    end
+    
+    # Rejects the email immediately
+    def reject
+      throw :halt, false
     end
   end
 end
