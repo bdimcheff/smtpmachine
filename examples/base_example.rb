@@ -175,6 +175,35 @@ describe "SMTPMachine::Base" do
 
       result.should == "ehlomail_fromrcpt_todatamap"
     end
+    
+    it 'maintains state between multiple calls' do
+      base = create_base do
+        ehlo(/mail.example.org/) { true }
+        mail_from(/bar@example.org/) { true }
+      end
+      
+      ehlo = {
+        :action => :ehlo, 
+        :ehlo => 'mail.example.org', 
+      }
+      
+      mail_from = {
+        :action => :mail_from, 
+        :mail_from => 'bar@example.org', 
+      }
+      
+      server = base.new
+      server.call(ehlo)
+      server.call(mail_from)
+      
+      env = {
+        :action => :mail_from, 
+        :ehlo => 'mail.example.org', 
+        :mail_from => 'bar@example.org', 
+      }
+      
+      server.env.should == env
+    end
   end
   
   describe "accepted addresses" do

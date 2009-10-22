@@ -12,7 +12,7 @@ module SMTPMachine
     
     include Router
 
-    attr_accessor :context, :state, :action
+    attr_accessor :context, :state, :action, :env
     
     reset!
 
@@ -27,7 +27,7 @@ module SMTPMachine
     end
     
     def call(env)
-      @env = env
+      @env = (self.env || {}).merge(env)
       @context = Context.new(env)
 
       match = false
