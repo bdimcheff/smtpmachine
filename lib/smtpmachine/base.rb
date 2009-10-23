@@ -27,8 +27,9 @@ module SMTPMachine
     end
     
     def call(env)
-      @env = (self.env || {}).merge(env)
-      @context = Context.new(env)
+      @env = env
+      @context ||= Context.new
+      @context.add(env)
 
       match = false
       

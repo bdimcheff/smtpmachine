@@ -95,14 +95,22 @@ describe "SMTPMachine::Base" do
       }
 
       base = create_base do
-        rcpt_to(/foo@example.org/) { called += 1 }
+        rcpt_to(/example.org/) { called += 1 }
       end
       
       obj = base.new
       obj.call(data)
+      
+      data = {
+        :action => :rcpt_to, 
+        :rcpt_to => 'baz@example.org'
+      }
+      
       obj.call(data)
       
       called.should == 2
+      
+      obj.context.recipients.should == ["foo@example.org", "baz@example.org"]
     end
   end
 
@@ -202,7 +210,7 @@ describe "SMTPMachine::Base" do
         :mail_from => 'bar@example.org', 
       }
       
-      server.env.should == env
+      server.context.to_hash.should == env
     end
   end
   
@@ -250,5 +258,5 @@ describe "SMTPMachine::Base" do
       
       base.new.call(@data.merge(:action => :rcpt_to)).should be_false
     end
-  end
+  end    
 end
