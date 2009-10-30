@@ -21,7 +21,7 @@ class Context
   
   def add(env)
     self.env.merge!(env)
-    self.recipients.concat([rcpt_to].flatten.uniq) if rcpt_to?
+    self.recipients.concat(Array(rcpt_to)).uniq! if rcpt_to?
   end
 
   def to_tmail
