@@ -4,6 +4,10 @@ module SMTPMachine
   class Server < EventMachine::Protocols::SmtpServer
     attr_reader :recipients, :sender
     self.parms = { :verbose => false }
+
+    def self.base=(base)
+      @@base = base
+    end
     
     def receive_sender(sender)
       @sender = sender
@@ -47,7 +51,9 @@ module SMTPMachine
       @data.concat data
     end
     
-    def self.start!
+    def self.start!(base)
+      self.base = base
+      
       EventMachine.run {
         EventMachine.start_server "127.0.0.1", 2525, SMTPMachine::Server
       }
