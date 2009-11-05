@@ -4,12 +4,6 @@ def call_all
   
 end
 
-def create_base(&block)
-  base = Class.new(SMTPMachine::Base)
-  base.class_eval(&block)
-  base
-end
-
 describe "SMTPMachine::Base" do
   describe "ehlo" do
     it "calls the ehlo block when receiving an EHLO action" do

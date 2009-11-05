@@ -39,6 +39,12 @@ def in_server(base)
   c
 end
 
+def create_base(&block)
+  base = Class.new(SMTPMachine::Base)
+  base.class_eval(&block)
+  base
+end
+
 def email_fixture(email)
   File.read(File.expand_path(File.join(File.dirname(__FILE__), 'emails', email)))
 end
@@ -58,7 +64,8 @@ def send_mail(params = {})
 end
 
 def send_fixture(email)
-  m = TMail::Mail.parse(email_fixture(email))
+  mail_text = email_fixture(email)
+  m = TMail::Mail.parse(mail_text)
 
   #send_mail(:to => m.to, :from => m.from, :body => m.body, :header =>
   #m.header)
@@ -68,5 +75,5 @@ def send_fixture(email)
                                  :domain => 'bogus.com',
                                  :from => m.from,
                                  :to => m.to,
-                                 :content => m.decoded + "\r\n.\r\n")
+                                 :content => mail_text + "\r\n.\r\n")
 end

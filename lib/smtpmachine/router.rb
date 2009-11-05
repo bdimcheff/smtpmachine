@@ -28,6 +28,7 @@ module SMTPMachine
       end
 
       def map(regex, options = {}, &block)
+        add_route(:rcpt_to, regex) { true }
         add_route(:data, regex, ({:match => :rcpt_to}).merge(options), &block)
       end
 
