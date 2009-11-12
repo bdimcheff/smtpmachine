@@ -59,9 +59,9 @@ module SMTPMachine
     
     def self.start!(base)
       self.base = base
-      
+
       EventMachine.run {
-        EventMachine.start_server "127.0.0.1", 2525, SMTPMachine::Server
+        EventMachine.start_server base.host, base.port, SMTPMachine::Server
       }
     end
   end
