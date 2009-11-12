@@ -19,13 +19,7 @@ module SMTPMachine
     def initialize
       self.state = []
     end
-
-    def remaining_actions
-      a = context.action
-
-      (States[0...States.index(a)] - state) << a
-    end
-    
+        
     def call(env)
       @env = env
       @context ||= Context.new
@@ -34,13 +28,10 @@ module SMTPMachine
       match = false
       
       catch(:halt) do
-        remaining_actions.each do |a|
-          self.action = a
-          res = !!route!
-          match ||= res
-          state << action
-        end
-        
+        self.action = context.action
+        res = !!route!
+        match ||= res
+        state << action
         match
       end
     end

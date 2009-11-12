@@ -153,31 +153,7 @@ describe "SMTPMachine::Base" do
     end
   end
 
-  describe "event chaining" do
-    it "calls all previous events when a later event is called" do
-      result = ""
-      
-      base = create_base do
-        ehlo(/mail.example.org/) { result << "ehlo" }
-        mail_from(/bar@example.org/) { result << "mail_from" }
-        rcpt_to(/foo@example.org/) { result << "rcpt_to" }
-        data(/mail data/i) { result << "data" }
-        map(/foo@example.org/) { result << "map" }
-      end
-
-      data = {
-        :action => :data, 
-        :ehlo => 'mail.example.org', 
-        :mail_from => 'bar@example.org', 
-        :rcpt_to => 'foo@example.org', 
-        :data => 'Mail data here...'
-      }
-      
-      base.new.call(data)
-
-      result.should == "ehlomail_fromrcpt_todatamap"
-    end
-    
+  describe "event chaining" do    
     it 'maintains state between multiple calls' do
       base = create_base do
         ehlo(/mail.example.org/) { true }
