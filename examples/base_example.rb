@@ -194,5 +194,22 @@ describe "SMTPMachine::Base" do
       app.receive_sender('sender@example.org')
       app.receive_recipient('foo@example.org').should be_false
     end
-  end    
+  end  
+  
+  describe 'a simple complete SMTP app' do
+    it 'accepts an email with a particular recipient' do
+      base = create_base do
+        ehlo(/example/) { true }
+        mail_from(/example/) { true }
+        rcpt_to(/foo@example.org/) { true }
+        data { true }
+      end
+      
+      app = base.new
+      app.receive_ehlo('mail.example.org').should be_true
+      app.receive_sender('sender@example.org').should be_true
+      app.receive_recipient('foo@example.org').should be_true
+      app.receive_data('Some Mail Data').should be_true
+    end
+  end
 end

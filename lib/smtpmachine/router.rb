@@ -11,23 +11,23 @@ module SMTPMachine
         self.routes = {}
       end
 
-      def ehlo(regex, options = {}, &block)
+      def ehlo(regex = nil, options = {}, &block)
         add_route(:ehlo, regex, options, &block)
       end
 
-      def mail_from(regex, options = {}, &block)
+      def mail_from(regex = nil, options = {}, &block)
         add_route(:from, regex, options, &block)
       end
       
-      def rcpt_to(regex, options = {}, &block)
+      def rcpt_to(regex = nil, options = {}, &block)
         add_route(:to, regex, options, &block)
       end
       
-      def data(regex, options = {}, &block)
+      def data(regex = nil, options = {}, &block)
         add_route(:data, regex, options, &block)
       end
 
-      def map(regex, options = {}, &block)
+      def map(regex = nil, options = {}, &block)
         add_route(:to, regex) { true }
         add_route(:data, regex, ({:match => :to}).merge(options), &block)
       end
@@ -68,9 +68,9 @@ module SMTPMachine
     def compile_routes
       self.routes =
         (self.class.routes[action] || []).select do |regex, match_action, _|
-          return true unless regex
-          
-          if action == match_action
+          if !regex
+            true
+          elsif action == match_action
             regex =~ payload
           else
             !([context.send(match_action)].flatten.grep(regex)).empty?
