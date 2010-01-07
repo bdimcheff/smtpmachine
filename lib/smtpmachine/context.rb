@@ -30,10 +30,4 @@ class Context
   def to_tmail
     TMail::Mail.parse(data) if data
   end
-  # 
-  # def to_hash
-  #   h = env.dup
-  #   h.merge!(:rcpt_to => @recipients) unless @recipients.empty?
-  #   h
-  # end
 end
