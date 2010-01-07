@@ -3,4 +3,10 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'smtpmachine'
 
-SMTPMachine::Server.start!
+class TempServer < SMTPMachine::Base
+  set :port, 2525
+  mail_from(/.*/) {true}
+  map(/.*/) {true}
+end
+
+SMTPMachine::Server.start!(TempServer)

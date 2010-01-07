@@ -185,7 +185,6 @@ describe "SMTPMachine::Base" do
   end
   
   describe "accepted addresses" do
-    
     before(:each) do
       @data = {
         :action => :data, 
