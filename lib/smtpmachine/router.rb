@@ -67,15 +67,15 @@ module SMTPMachine
     private
     def compile_routes
       self.routes =
-        (self.class.routes[action] || []).select { |r, m, _|
-          return true unless r
+        (self.class.routes[action] || []).select do |regex, match_action, _|
+          return true unless regex
           
-          if action == m
-            r =~ payload
+          if action == match_action
+            regex =~ payload
           else
-            !([context.send(m)].flatten.grep(r)).empty?
+            !([context.send(match_action)].flatten.grep(regex)).empty?
           end
-      }.map {|_,_,b| b}
+      end.map {|_,_,b| b}
     end
 
     # Pass control to the next matching route.
