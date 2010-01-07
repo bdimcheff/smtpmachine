@@ -3,8 +3,8 @@ require 'ostruct'
 
 def route(email = 'foo@example.com')
   router = @router.new
-  router.context.rcpt_to = email
   router.action = :data
+  router.context.to = [email]
   router.route!
 end
 
@@ -64,7 +64,7 @@ describe 'SMTPMachine::Router' do
 
     called.should == '*foo'
   end
-
+  
   it "passes to the next match when pass is called" do
     called = ''
     
@@ -77,7 +77,7 @@ describe 'SMTPMachine::Router' do
 
     called.should == 'win'
   end
-
+  
   # it "halts all processing when halt is called" do
   #   called = ''
   #   

@@ -77,3 +77,16 @@ def send_fixture(email)
                                  :to => m.to,
                                  :content => mail_text + "\r\n.\r\n")
 end
+
+def build_context(env)
+  context = Context.new
+  
+  context.receive_ehlo(env[:ehlo]) if env[:ehlo]
+  context.receive_sender(env[:from]) if env[:from]
+  (env[:to] || []).each do |to|
+    context.receive_recipient(to)
+  end
+  context.receive_data(env[:data]) if env[:data]
+  
+  context
+end

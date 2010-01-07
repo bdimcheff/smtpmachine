@@ -36,7 +36,7 @@ module SMTPMachine
     
     include Router
 
-    attr_accessor :context, :state, :action, :env
+    attr_reader :context, :action, :payload
     
     reset!
     
@@ -44,23 +44,58 @@ module SMTPMachine
     set :port, 25
 
     def initialize
-      self.state = []
+      @context = Context.new
     end
-        
-    def call(env)
-      @env = env
-      @context ||= Context.new
-      @context.add(env)
-
-      match = false
+    
+    def receive_ehlo(greeting)
+      @action = :ehlo
+      @payload = greeting
       
       catch(:halt) do
-        self.action = context.action
-        res = !!route!
-        match ||= res
-        state << action
-        match
+        @context.receive_ehlo(greeting) && route!
       end
     end
+    
+    def receive_sender(sender)
+      @action = :from
+      @payload = sender
+      
+      catch(:halt) do
+        @context.receive_sender(sender) && route!
+      end
+    end
+    
+    def receive_recipient(recipient)
+      @action = :to
+      @payload = recipient
+      
+      catch(:halt) do
+        @context.receive_recipient(recipient) && route!
+      end
+    end
+    
+    def receive_data(data)
+      @action = :data
+      @payload = data
+      
+      catch(:halt) do
+        @context.receive_data(data) && route!
+      end
+    end
+    
+        
+    # def call(env)
+    #   @context.add(env)
+    # 
+    #   match = false
+    #   
+    #   catch(:halt) do
+    #     self.action = context.action
+    #     res = !!route!
+    #     match ||= res
+    #     state << action
+    #     match
+    #   end
+    # end
   end
 end

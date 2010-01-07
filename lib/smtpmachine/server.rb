@@ -19,15 +19,15 @@ module SMTPMachine
     
     def receive_ehlo_domain(domain)
       @app ||= self.class.base.new
-      @app.call(:action => :ehlo, :ehlo => domain)
+      @app.receive_ehlo(domain)
     end
     
     def receive_sender(sender)
-      @app.call(:action => :mail_from, :mail_from => sender)
+      @app.receive_sender(sender)
     end
 
     def receive_recipient(recipient)
-      @app.call(:action => :rcpt_to, :rcpt_to => recipient)
+      @app.receive_recipient(recipient)
     end
 
     def receive_message
@@ -49,7 +49,7 @@ module SMTPMachine
       # EM.defer { df.do_work }
       # # 
       # df
-      @app.call(:action => :data, :data => @data)
+      @app.receive_data(@data)
     end
     
     def receive_data_chunk(data)
