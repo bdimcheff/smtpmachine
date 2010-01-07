@@ -1,41 +1,22 @@
 require 'tmail'
-require 'state_machine'
 
 class Context
-  attr_accessor :ehlo, :from, :to, :data
+  attr_reader :ehlo, :from, :to, :data
+    
+  def receive_ehlo(ehlo)
+    @ehlo = ehlo
+  end
   
-  state_machine do
-    event :receive_ehlo do
-      transition nil => :authenticated
-    end
-    
-    before_transition :on => :receive_ehlo do |context, transition|
-      context.ehlo = transition.args.shift
-    end
-    
-    event :receive_sender do
-      transition :authenticated => :received_sender
-    end
-        
-    before_transition :on => :receive_sender do |context, transition|
-      context.from = transition.args.shift
-    end
-    
-    event :receive_recipient do
-      transition [:received_sender, :received_recipients] => :received_recipients
-    end
-    
-    before_transition :on => :receive_recipient do |context, transition|
-      context.add_recipient transition.args.shift
-    end
-    
-    event :receive_data do
-      transition :received_recipients => :received_data
-    end
-    
-    before_transition :on => :receive_data do |context, transition|
-      context.data = transition.args.shift
-    end
+  def receive_sender(sender)
+    @from = sender
+  end
+  
+  def receive_recipient(recipient)
+    @to << recipient
+  end
+  
+  def receive_data(data)
+    @data = data
   end
   
   def initialize
@@ -47,7 +28,7 @@ class Context
   end
   
   def to_tmail
-    TMail::Mail.parse(data) if received_data?
+    TMail::Mail.parse(data) if data
   end
   # 
   # def to_hash
