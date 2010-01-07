@@ -47,8 +47,8 @@ module SMTPMachine
     attr_accessor :routes
 
     def initialize
-      self.routes = {}
       super
+      self.routes = {}
     end
       
     def route!

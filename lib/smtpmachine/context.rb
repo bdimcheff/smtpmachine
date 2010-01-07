@@ -20,6 +20,7 @@ class Context
   end
   
   def initialize
+    super
     @to = []
   end
   

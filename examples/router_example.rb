@@ -17,6 +17,7 @@ describe 'SMTPMachine::Router' do
       reset!
       
       def initialize
+        super
         self.context = OpenStruct.new
       end
     end

@@ -44,6 +44,7 @@ module SMTPMachine
     set :port, 25
 
     def initialize
+      super
       @context = Context.new
     end
     
