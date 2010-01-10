@@ -1,4 +1,4 @@
-require 'example_helper'
+require 'spec_helper'
 require 'ostruct'
 
 def route(email = 'foo@example.com')

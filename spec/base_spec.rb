@@ -1,4 +1,4 @@
-require 'example_helper'
+require 'spec_helper'
 
 def call_all
   

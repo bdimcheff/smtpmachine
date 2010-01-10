@@ -1,4 +1,4 @@
-require 'example_helper'
+require 'spec_helper'
 
 describe 'receiving SMTP messages' do
   it "runs the server" do
